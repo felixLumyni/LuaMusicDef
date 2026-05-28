@@ -71,17 +71,20 @@ local render = function(v, p)
         local font = title:len() > 24 and "thin-right" or "right"
         v.drawString(newX, y, title, V_ALLOWLOWERCASE|V_SNAPTORIGHT, font)
         local extratext
-        local textcolor
+        local usingAuthors
         if isHoldingTab then
-            extratext = currentDef.Authors or LUAMUSICDEF[-1].Authors
-            if type(extratext) == "table" then
-                extratext = table.concat(extratext, ", ")
-            end
-            textcolor = V_GRAYMAP
+            extratext = currentDef.Authors or currentDef.Source or LUAMUSICDEF[-1].Authors
+            usingAuthors = currentDef.Authors ~= nil
         else
-            extratext = currentDef.Source or LUAMUSICDEF[-1].Source
-            textcolor = V_YELLOWMAP
+            extratext = currentDef.Source or currentDef.Authors or LUAMUSICDEF[-1].Source
+            usingAuthors = currentDef.Source == nil and currentDef.Authors ~= nil
         end
+
+        if type(extratext) == "table" then
+            extratext = table.concat(extratext, ", ")
+        end
+
+        local textcolor = usingAuthors and V_GRAYMAP or V_YELLOWMAP
         font = extratext:len() > 24 and "thin-right" or "right"
         v.drawString(newX, y-8, extratext, textcolor|V_ALLOWLOWERCASE|V_SNAPTORIGHT, font)
     end
