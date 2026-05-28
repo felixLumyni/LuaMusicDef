@@ -1,3 +1,10 @@
+local enabled = CV_RegisterVar{
+	name = "lmd",
+	flags = CV_LOCAL,
+	PossibleValue = CV_OnOff,
+	defaultvalue = "On"
+}
+
 local isHoldingTab = false
 addHook("KeyDown", function(key)
     if key.num == input.gameControlToKeyNum(GC_SCORES) then
@@ -16,6 +23,9 @@ local displayTime = 0
 local MAXTIME = 5*TICRATE
 local TRANSITIONTIME = TICRATE
 local render = function(v, p)
+    if not (enabled.value) then
+        return
+    end
     if p and p == secondarydisplayplayer then
         return
     end
