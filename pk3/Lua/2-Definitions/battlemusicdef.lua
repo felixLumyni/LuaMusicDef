@@ -15,7 +15,7 @@ local function battlecheck()
 		
 		LUAMUSICDEF.add("BSHDWN", {
 			Title = "Back to Mad",
-			Authors = "Texas Faggott",
+			Authors = "Texas F.",
 			Event = true
 		})
 	end
