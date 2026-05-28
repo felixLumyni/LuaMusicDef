@@ -73,7 +73,10 @@ local render = function(v, p)
         local extratext
         local textcolor
         if isHoldingTab then
-            extratext = currentDef.Authors and table.concat(currentDef.Authors, ", ") or table.concat(LUAMUSICDEF[-1].Authors, ", ")
+            extratext = currentDef.Authors or LUAMUSICDEF[-1].Authors
+            if type(extratext) == "table" then
+                extratext = table.concat(extratext, ", ")
+            end
             textcolor = V_GRAYMAP
         else
             extratext = currentDef.Source or LUAMUSICDEF[-1].Source
@@ -84,4 +87,5 @@ local render = function(v, p)
     end
 end
 hud.add(render, "game")
+hud.add(render, "scores")
 hud.add(render, "intermission")
