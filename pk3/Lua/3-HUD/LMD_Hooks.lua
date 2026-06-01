@@ -44,6 +44,7 @@ local render = function(v, p)
     if (displayTime > 0 or isHoldingTab) and LUAMUSICDEF and LUAMUSICDEF[displayMusic] then
         local x = 320
         local y = 240*3/4
+        local trans = V_HUDTRANS
         local animate = ease.outquint
         local anim_percent
         if isHoldingTab then
@@ -60,16 +61,16 @@ local render = function(v, p)
         local bgframe = (time/2)%16
         local bg = v.cachePatch("MusicDef_BarAni"..bgframe+1)
         local color = currentDef.Event and v.getColormap(nil, SKINCOLOR_ORANGE) or nil
-        v.draw(newX-(bg.width), y-(bg.height/2), bg, V_SNAPTORIGHT, color)
+        v.draw(newX-(bg.width), y-(bg.height/2), bg, trans|V_SNAPTORIGHT, color)
         newX=newX-16
         local itemname = currentDef.Event and "Record" or "MusicNote"
         local frame = (time/5)%4
         local icon = v.cachePatch(itemname.."_"..1+frame)
-        v.draw(newX, y-(icon.height)+3, icon, V_SNAPTORIGHT, color)
+        v.draw(newX, y-(icon.height)+3, icon, trans|V_SNAPTORIGHT, color)
         y=y-5
         local title = currentDef.Title or LUAMUSICDEF[-1].Title
         local font = title:len() > 24 and "thin-right" or "right"
-        v.drawString(newX, y, title, V_ALLOWLOWERCASE|V_SNAPTORIGHT, font)
+        v.drawString(newX, y, title, trans|V_ALLOWLOWERCASE|V_SNAPTORIGHT, font)
         local extratext
         local usingAuthors
         if isHoldingTab then
@@ -86,7 +87,7 @@ local render = function(v, p)
 
         local textcolor = usingAuthors and V_GRAYMAP or V_YELLOWMAP
         font = extratext:len() > 24 and "thin-right" or "right"
-        v.drawString(newX, y-8, extratext, textcolor|V_ALLOWLOWERCASE|V_SNAPTORIGHT, font)
+        v.drawString(newX, y-8, extratext, trans|textcolor|V_ALLOWLOWERCASE|V_SNAPTORIGHT, font)
     end
 end
 hud.add(render, "game")
