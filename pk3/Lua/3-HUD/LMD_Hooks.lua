@@ -20,6 +20,7 @@ end)
 
 local displayMusic = nil
 local displayTime = 0
+local animTime = 0
 local MAXTIME = 5*TICRATE
 local TRANSITIONTIME = TICRATE
 local render = function(v, p)
@@ -56,8 +57,8 @@ local render = function(v, p)
         local newX = animate(anim_percent, 320+x, x)
 
         local currentDef = LUAMUSICDEF[displayMusic]
-        local time = (isHoldingTab and leveltime or displayTime)
-        local bgframe = (time/2)%16
+        animTime = $+1
+        local bgframe = (animTime/2)%16
         local bg = v.cachePatch("MusicDef_BarAni"..bgframe+1)
         local bg2 = v.cachePatch("MusicDef_BarNoBG")
         local bgtrans = isHoldingTab and V_HUDTRANSHALF or V_HUDTRANS
@@ -66,7 +67,7 @@ local render = function(v, p)
         --v.draw(newX-(bg.width), y-(bg.height/2), bg2, V_HUDTRANS|V_SNAPTORIGHT, color)
         newX=newX-16
         local itemname = currentDef.Event and "Record" or "MusicNote"
-        local frame = (time/5)%4
+        local frame = (animTime/5)%4
         local icon = v.cachePatch(itemname.."_"..1+frame)
         v.draw(newX, y-(icon.height)+3, icon, V_HUDTRANS|V_SNAPTORIGHT, color)
         y=y-5
@@ -90,6 +91,8 @@ local render = function(v, p)
         local textcolor = usingAuthors and V_GRAYMAP or V_YELLOWMAP
         font = extratext:len() > 24 and "thin-right" or "right"
         v.drawString(newX, y-8, extratext, V_HUDTRANS|textcolor|V_ALLOWLOWERCASE|V_SNAPTORIGHT, font)
+    else
+        animTime = 0
     end
 end
 hud.add(render, "game")
