@@ -18,15 +18,19 @@ end
 --Example: lmd_localadd GFZ2 "cool song" "cool author" "cool game"
 --Only key and title are mandatory
 LUAMUSICDEF.localadd = function(player, key, title, authors, source, bpm, event)
-    local tbl = {}
+    if not (key and title) then
+        CONS_Printf(player, 'Usage (only key and title are mandatory): lmd_localadd <tunes/lump> <title> <authors> <source> <bpm> <extra>\n')
+        CONS_Printf(player, 'Example: lmd_localadd GFZ1 "Cool Song" "" "Cool Game"')
+        CONS_Printf(player, 'TIP: This can be executed from a TXT file!')
+        return
+    end
     
-    assert(type(key) == "string", "Key must be a string.")
-    assert(type(title) == "string", "Title must be a string.")
     if authors == "" then authors = nil end
     if source == "" then source = nil end
     if bpm == "" then bpm = nil end
     if event == "" then event = nil end
-
+    
+    local tbl = {}
     tbl.Title = title
     tbl.Authors = authors
     tbl.Source = source
